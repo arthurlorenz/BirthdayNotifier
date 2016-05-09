@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BirthdayNotifier</string>
+    <string name="action_settings">Settings</string>
+    <string name="title">Birthday Notifier</string>
+    <string name="logo">Birthday Notifier Logo</string>
+    <string name="no_data">No data</string>
+    <string name="addcontact">Kontakt hinzufügen</string>
+    <string name="search">Suche</string>
+</resources>
