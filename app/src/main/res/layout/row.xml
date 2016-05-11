@@ -5,26 +5,28 @@
     android:onClick="openContact">
 
     <ImageView
+        android:id="@+id/zodiacSign"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="8dp" />
 
     <TextView
         android:id="@+id/contactName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/contactName"
-        android:layout_alignParentLeft="true"
-        android:textSize="20dp"
+        android:textSize="20sp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="15dp"
-        android:paddingLeft="8dp" />
+        android:paddingLeft="8dp"
+        android:layout_marginLeft="30dp" />
 
     <TextView
         android:id="@+id/contactBday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/contactBday"
         android:layout_alignParentRight="true"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_marginTop="15dp"
         android:paddingRight="8dp" />
 
