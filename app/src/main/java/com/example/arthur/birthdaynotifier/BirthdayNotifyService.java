@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ import java.util.ArrayList;
  */
 public class BirthdayNotifyService extends Service {
 
-    ArrayList<MyContact> arrayList;
+    private ArrayList<MyContact> arrayList;
+    private static boolean started = false;
 
     public BirthdayNotifyService() {
         super();
@@ -32,6 +34,8 @@ public class BirthdayNotifyService extends Service {
             e.printStackTrace();
         }
         startBNS();
+        started = true;
+        Log.d("Service: ", "started!");
         return START_STICKY;
 
     }
@@ -81,6 +85,14 @@ public class BirthdayNotifyService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    /**
+     * returns if service is start
+     * @return true if service is started
+     */
+    public static boolean isStarted() {
+        return started;
     }
 
 

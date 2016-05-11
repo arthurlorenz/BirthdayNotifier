@@ -1,27 +1,22 @@
 package com.example.arthur.birthdaynotifier;
 
-import android.app.ListActivity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.google.android.gms.appindexing.Action;
@@ -44,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startService();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -188,5 +184,28 @@ public class MainActivity extends AppCompatActivity {
         if (getPackageManager().resolveActivity(intent, 0) != null) {
             startActivity(intent);
         }
+    }
+
+    /**
+     * starts BirthdayNotifyService
+     */
+    private void startService() {
+
+        Intent serviceIntent;
+        Intent bnIntent;
+        PendingIntent pendingIntent;
+        AlarmManager alarmManager;
+
+        //check if service is started and then stop it
+        if(BirthdayNotifyService.isStarted()) {
+            serviceIntent = new Intent(this, BirthdayNotifyService.class);
+            stopService(serviceIntent);
+        }
+
+        //start service
+        alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        bnIntent = new Intent(this, BirthdayNotifyService.class);
+        pendingIntent = PendingIntent.getService(this, 0, bnIntent, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, AlarmManager.INTERVAL_HOUR, pendingIntent);
     }
 }
