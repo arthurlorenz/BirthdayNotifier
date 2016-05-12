@@ -27,7 +27,7 @@ public class BirthdayDataFactory {
                 + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY;
 
         String[] selectionArgs = new String[]{ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE};
-        String sortOrder = null;
+        String sortOrder = ContactsContract.CommonDataKinds.Event.DISPLAY_NAME_ALTERNATIVE+ " ASC";
 
         Cursor cursor = context.getContentResolver().query(uri, projection, where,
                 selectionArgs, sortOrder);

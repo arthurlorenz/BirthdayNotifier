@@ -14,9 +14,9 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.android.gms.appindexing.Action;
@@ -26,7 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
     private ArrayList<MyContact> myContacts;
-    CustomAdapter adapter;
+    private CustomAdapter customAdapter;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
         createList();
 
-        adapter = new CustomAdapter(this, myContacts);
-        ListView listView = (ListView) findViewById(R.id.listview);
-
+        customAdapter = new CustomAdapter(this, myContacts);
+        listView = (ListView) findViewById(R.id.listview);
         assert listView != null;
-        listView.setAdapter(adapter);
+        listView.setTextFilterEnabled(false);
+        listView.setAdapter(customAdapter);
 
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -66,22 +67,11 @@ public class MainActivity extends AppCompatActivity {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         ComponentName componentName = new ComponentName(this, MainActivity.class);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName));
+        searchView.setSubmitButtonEnabled(false);
+        searchView.setOnQueryTextListener(this);
 
         return true;
     }
@@ -207,5 +197,16 @@ public class MainActivity extends AppCompatActivity {
         bnIntent = new Intent(this, BirthdayNotifyService.class);
         pendingIntent = PendingIntent.getService(this, 0, bnIntent, 0);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, AlarmManager.INTERVAL_HOUR, pendingIntent);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        customAdapter.getFilter().filter(newText);
+        return true;
     }
 }
